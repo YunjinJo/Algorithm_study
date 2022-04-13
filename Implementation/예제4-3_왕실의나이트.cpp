@@ -60,6 +60,12 @@ int main()
             current_x = i + 1;
         }
     }
+
+    /*
+    current_x = knight[0] - 'a' + 1;
+    로 대체 가능
+    */
+
     // ASCII 값에 따라 0 = 48, 1 = 49, ... , 9 = 57이므로
     // char형 숫자문자 - '0' = 숫자 가 나온다.
     current_y = knight[1] - '0'; 
