@@ -38,15 +38,13 @@ int main()
 
     for(int minute = 0; minute < 60; minute++) // 0 ~ 59분 사이 카운팅
     {
-        
-
         for(int second = 0; second < 60; second++) // 0 ~ 59초 사이 카운팅
         {
-            if(minute / 10 == 3 || minute % 10 == 3)
+            if(minute / 10 == 3 || minute % 10 == 3) // 3x분이거나 x3분이면
             {
                 count++;
             }
-            else if(second / 10 == 3 || second % 10 == 3)
+            else if(second / 10 == 3 || second % 10 == 3) // 3x초이거나 x3초이면
             {
                 count++;
             }
