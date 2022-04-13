@@ -35,28 +35,28 @@ int main()
     cin >> N;
 
     cout << "이동 계획서를 입력해주세요." << "\n";
-    cin.ignore(); // N을 입력받을 때 남은 버퍼 비움, cin은 엔터를 버리지 않고 버퍼에 남긴다.
+    cin.ignore(); // N을 입력받을 때 남은 버퍼 비움, cin은 엔터를 버리지 않고 버퍼에 남긴다
     getline(cin, movements); // (입력 스트림 오브젝트, 문자열을 저장할 string 객체)
     
 
-    for(int i = 0; i < movements.size(); i++)
+    for(int i = 0; i < movements.size(); i++) // movements 입력받은 만큼 반복
     {
-        char move = movements[i];
-        int temp_x = 0;
-        int temp_y = 0;
+        char move = movements[i]; // i번째 이동 명령
+        int temp_x = 0; // x축으로 이동할 총 횟수
+        int temp_y = 0; // y축으로 이동할 총 횟수
         for (int j = 0; j < 4; j++)
         {
-            if(move == moveTypes[j])
+            if(move == moveTypes[j]) // 이동 명령에 따라 임시로 이동
             {
                 temp_x = current_x + dx[j];
                 temp_y = current_y + dy[j];
             }
 
-            if(temp_x < 1 || temp_y < 1 || temp_x > N || temp_y > N)
+            if(temp_x < 1 || temp_y < 1 || temp_x > N || temp_y > N) // 범위를 벗어난다면 넘긴다
                 continue;
 
-            current_x = temp_x;
-            current_y = temp_y;
+            current_x = temp_x; // 현재 x좌표로 저장
+            current_y = temp_y; // 현재 y좌표로 저장
         }
     }
 
