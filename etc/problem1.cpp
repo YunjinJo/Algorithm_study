@@ -1,0 +1,53 @@
+// https://leetcode.com/problems/valid-parentheses/
+// 오픈소스 컨트리뷰션 사전과제
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    string s1 = "()";
+    string s2 = "(){}[]";
+    string s3 = "(]";
+    const char pClosed[] = {')', '}', ']'};
+    vector<char> v;
+    int i = 1;
+    char x1;
+    char x2;
+
+    v.push_back(s2.at(0));
+
+    cout << s2.size() << '\n';
+
+    
+
+    while (i < s2.size())
+    {
+        if(v.size() != 0) // heap buffer overflow 방지
+        {
+            x1 = (v.back()) + 0x01; // '('과 ')'은 아스키 코드표 상에서 0x01 차이
+            x2 = x1 + 0x01; // '{', '}'과 '[', ']'은 0x02 차이
+        }
+        // 괄호가 맞는 경우
+        if(x1 == s2.at(i) || x2 == s2.at(i))
+        {
+            v.pop_back();
+            i++;
+            cout << i << '\n';
+        }
+        else
+        {
+            v.push_back(s2.at(i));
+            i++;
+        }
+        
+    } 
+
+    if(v.size() == 0)
+    {
+        cout << "괄호 매칭" << '\n';
+    }
+    else
+        cout << "괄호 매칭 실패" << '\n';
+
+    return 0;
+}
