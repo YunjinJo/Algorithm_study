@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+// 오픈소스 컨트리뷰션 사전과제
 #include <bits/stdc++.h>
 using namespace std;
 
