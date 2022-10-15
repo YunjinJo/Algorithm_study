@@ -1,96 +1,117 @@
-#include <iostream>
 #include <cstdio>
-#include <queue>
-#include <cstdlib>
-#include <vector>
+#include <stdio.h>
+#include <iostream>
 #include <algorithm>
+#include <vector>
+#include <queue>
+#define INF 987654321
 using namespace std;
+
+struct Point
+{
+	int r, c, d;
+};
+
 const int MAX = 22;
+int sea[MAX][MAX] = {0, };
 int n;
-int m = 0; // ë¬¼ê³ ê¸° ë§ˆë¦¬ìˆ˜
-int sea[MAX][MAX];
 
-int dx[] = {0, -1, 1, 0};
-int dy[] = {-1, 0, 0, 1};
+int dx[] = { -1, 0, 0, 1 };
+int dy[] = { 0, -1, 1, 0 };
 
+int sharkX = 0;
+int sharkY = 0;
 int sharkSize = 2;
-int growCnt = 0;
-int currentX = 0;
-int currentY = 0;
+int eatCnt = 0;
 
-bool isOut(int X, int Y){
-    if(X < 0 || X >= n || Y <0 || Y >= n) return true;
-    else return false;
+
+int BFS() {
+	int ret = 0;
+	Point minPt = { sharkY, sharkX, 0 }; // ÇöÀç »ó¾î À§Ä¡
+
+	do {
+		// ÃÊ±âÈ­
+		bool visited[MAX][MAX] = { 0, };
+		queue<Point> myq;
+		visited[minPt.r][minPt.c] = true;
+		myq.push({ minPt.r, minPt.c, 0 });
+		minPt.d = INF;
+
+		// BFS
+		while (!myq.empty()) {
+			Point current = myq.front();
+			//cout << current.r << ' ' << current.c << '\n';
+			myq.pop();
+
+			if (current.d > minPt.d) {
+				//cout << " break " << '\n';
+				break;
+			}
+			if (sea[current.r][current.c] > sharkSize) continue; // ¸ø¸ÔÀ½
+
+			// ¹°°í±â ¸ÔÀ½
+			if (sea[current.r][current.c] != 0 && sea[current.r][current.c] < sharkSize) {
+				// ´õ °¡±îÀÌ¿¡ ÀÖ´Â°¡?
+				if (current.d < minPt.d) {
+					minPt = current;
+
+				}
+				else if (current.d == minPt.d) {
+					// ´õ À§ÂÊ¿¡ ÀÖ´Â°¡?
+					if (current.r < minPt.r) {
+						minPt = current;
+					}
+					// ´õ ¿ÞÂÊ¿¡ ÀÖ´Â°¡?
+					else if (current.r == minPt.r && current.c < minPt.c) {
+						minPt = current;
+					}
+				}
+				continue;
+			}
+
+			for (int i = 0; i < 4; i++) {
+				int nr = current.r + dy[i];
+				int nc = current.c + dx[i];
+				if (nr < 0 || nr >= n || nc < 0 || nc >= n) continue;
+				if (visited[nr][nc]) continue;
+				visited[nr][nc] = true;
+				myq.push({ nr, nc, current.d + 1 });
+			}
+		}
+
+		// ¹°°í±â¸¦ ¸ÔÀ½
+		if (minPt.d != INF) {
+			ret += minPt.d;
+			eatCnt++;
+			if (eatCnt == sharkSize) {
+				sharkSize++;
+				eatCnt = 0;
+			}
+			sea[minPt.r][minPt.c] = 0;
+		}
+
+	} while (minPt.d != INF); // ¹°°í±â ¸ø¸ÔÀ½
+	
+	return ret;
 }
 
-int BFS(){
-    int cnt = 0;
-    queue <pair<int, int>> q;
-    bool check[MAX][MAX] = {0, };
-    q.push(make_pair(currentX, currentY));
-    check[currentY][currentX] = true;
-    
-
-    while(!q.empty()){
-        int topX = q.front().first;
-        int topY = q.front().second;
-        if(sea[topY][topX] < sharkSize && sea[topY][topX] != 0){
-            int subX = abs(currentX - topX);
-            int subY = abs(currentY - topY);
-            int distance = subX + subY;
-        }
-        //cout << sea[topY][topX] << ' ';
-        q.pop();
-
-        for(int i = 0; i < 4; i++){
-            int nextX = topX + dx[i];
-            int nextY = topY + dy[i];
-            if(isOut(nextX, nextY)) continue;
-
-            if(check[nextY][nextX] == 0){
-                if(sea[nextY][nextX] <= sharkSize){
-                    q.push(make_pair(nextX, nextY));
-                    check[nextY][nextX] = true;
-                }
-
-            }
-
-        }
-        
-    }
-    
-    return cnt;
-}
-
-int main(){
-    cin >> n;
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            int temp;
-            cin >> temp;
-            if(temp == 9){
-                currentX = j;
-                currentY = i;
-            }
-            else m++;
-            sea[i][j] = temp;
-        }
-    }
-    int answer = 0;
-    while(true){
-        int temp = BFS();
-        if(temp == 0){
-            break;
-        }
-        else{
-            answer += temp;
-            growCnt++;
-            if(growCnt == sharkSize){
-                sharkSize++;
-                growCnt = 0;
-            }
-        }
-    }
-    cout << answer;
-    return 0;
+int main() {
+	
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			int temp;
+			cin >> temp;
+			sea[i][j] = temp;
+			if (temp == 9) {
+				sharkY = i;
+				sharkX = j;
+				sea[i][j] = 0;
+			}
+			
+		}
+	}
+	int answer = BFS();
+	cout << answer;
+	return 0;
 }
