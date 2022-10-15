@@ -9,6 +9,7 @@ int n, m;
 
 bool compareString(int index){
     int cmpSize = cmp.size();
+    if(m - index < cmpSize) return false;
     for(int i = 0; i < cmpSize; i++){
         if(s[index + i] != cmp[i]) return false;
     }
