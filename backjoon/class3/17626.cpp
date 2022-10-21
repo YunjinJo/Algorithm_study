@@ -1,16 +1,5 @@
 /*
-1 = 1
-2 = 1 1
-3 = 1 1 1
-4 = 2, 1 1 1 1
-5 = 2 1
-6 = 2 1 1
-7 = 2 1 1 1
-8 = 2 2
-9 = 3, 2 2 1
-10 = 3 1, 2 2 1 1
-11 = 3 1 1
-12 = 3 1 1 1, 2 2 2
+
 */
 
 #include <iostream>
@@ -24,10 +13,7 @@ int DP[MAX];
 int main(){
     cin >> n;
     DP[1] = 1;
-    DP[2] = 1;
-    DP[3] = 1;
-    DP[4] = 2;
-    for(int i = 5; i < n; i++){
+    for(int i = 2; i <= n; i++){
         int minValue = INT_MAX;
         for(int j = 1; j * j <= i; j++){
             int temp = i - j * j;
